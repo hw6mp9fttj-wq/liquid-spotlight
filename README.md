@@ -1,2 +1,64 @@
-# liquid-spotlight
-A Spotlight-style search app rebuilt with iOS 27 Liquid Glass material. Single-file HTML, zero dependencies.
+# 聚焦搜索 · Liquid Glass
+
+一个用 iOS 27 的液态玻璃（Liquid Glass）语言重做的聚焦搜索（Spotlight）。单文件 HTML，打开即用，没有构建步骤、没有外部依赖。
+
+![玻璃材质](https://img.shields.io/badge/material-Liquid%20Glass-9fe9ff) ![单文件](https://img.shields.io/badge/build-none-success) ![License](https://img.shields.io/badge/license-MIT-black)
+
+## 它是什么
+
+一块会折射背景的光的玻璃，落在桌面上。按 `⌘K` 唤起，输入任何东西都有回应——应用、备忘录、文件、算式、单位换算、网页搜索。关闭面板后，桌面上的应用可以真正打开并使用。
+
+## 功能
+
+- **实时搜索**：应用、文件、备忘录、网页、系统操作，随输入即时过滤，命中字符高亮。
+- **表达式计算**：`128 * 7 + sqrt(2)`、`(1+2)^3`、`12% * 80`、`√9`，支持括号、乘方、百分比。
+- **单位换算**：`12 厘米 换算 英寸`、`72kg 磅`、`100华氏度 摄氏度`、`1.5GB MB`，覆盖长度、重量、温度、数据、时间。
+- **备忘录索引**：备忘录应用里写下的内容会立刻进入搜索结果，回车跳到对应笔记。
+- **网页搜索**：结果末尾始终保留一条「在 Bing 搜索」，回车在新标签页打开。
+- **玻璃实验台**：三个滑块实时调节厚度（模糊）、镜面高光与边缘色散，主面板与所有窗口同步变化。
+- **深色 / 浅色外观**：可在搜索里输入「切换外观」直接切换。
+- **键盘优先**：`↑` `↓` 选择、`↩` 打开、`esc` 关闭、`⌘⌫` 清空；输入任意字符即唤起。
+- **响应式**：桌面是浮起的玻璃面板，窄屏变成贴顶的玻璃卡片。
+
+## 键盘
+
+| 按键 | 作用 |
+| --- | --- |
+| `⌘K` / `Ctrl K` | 唤起或关闭聚焦面板 |
+| `↑` `↓` | 在结果间移动 |
+| `↩` | 打开选中项 |
+| `esc` | 关闭面板 |
+| `⌘⌫` | 清空输入 |
+
+## 液态玻璃是怎么做的
+
+没有贴图，全部由 CSS 分层合成：
+
+1. **底材**：`backdrop-filter: blur() saturate() brightness()` 让面板真正吸住背后的壁纸与窗口。
+2. **染色**：一层从左上到右下的白色渐变，加顶部径向提亮，模拟玻璃对环境的自适应色偏。
+3. **镜面高光**：`conic-gradient` 画出一圈光，再用 `mask-composite` 只保留 1.4px 的描边，上缘最亮、转角形成连续光弧。
+4. **边缘色散**：第二圈更宽的 conic 渐变（青 / 品 / 黄）模糊后压在边缘，模拟折射分解出的彩边。
+5. **油膜高光**：跟随指针的径向高光，`mix-blend-mode: screen` 叠在内容之上。
+6. **颗粒**：`feTurbulence` 生成的噪点以 overlay 混合，避免玻璃显得像塑料。
+
+面板的圆角、厚度与三组参数都挂在 CSS 变量上（`--blur` `--spec` `--disp`），实验台直接改这些变量。
+
+## 运行
+
+```bash
+git clone https://github.com/hw6mp9fttj-wq/liquid-spotlight.git
+cd liquid-spotlight
+open index.html      # macOS
+# 或直接双击 index.html
+```
+
+也可以把仓库 Settings → Pages 打开（Source 选 `main` / root），就能得到在线版本。
+
+## 真实与示例
+
+- 真实：计算、单位换算、备忘录（浏览器 localStorage）、网页搜索、复制结果、外观切换、材质调节。
+- 示例：文件与图片条目、桌面壁纸与菜单栏是演示场景，不会读取或写入你本机的文件。
+
+## License
+
+MIT
